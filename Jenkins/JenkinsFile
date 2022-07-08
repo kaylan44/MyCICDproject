@@ -1,0 +1,108 @@
+pipeline {
+    
+    agent any
+    
+	environment {
+		DOCKERHUB_CREDENTIALS=credentials('dockerhub-kaylan44')
+		PROJECT_ID = 'ilkilab08'
+		CLUSTER_NAME = 'cluster-ci-cd-m2i-project'
+		LOCATION= 'europe-west1-b'
+		CREDENTIALS_ID = 'kubernetes'
+	}
+	
+    stages {
+        stage('Echo Bonjour petit Pipeline') {
+            steps {
+                echo 'Bonjour petit Pipeline !'
+            }
+        }     
+        stage('Git clone project') {
+            steps {
+                git branch: 'main',
+                    url: 'https://github.com/kaylan44/MyCICDproject'
+            }
+        }
+
+        stage('mvn test') {
+            steps {
+                sh 'echo $PWD'
+                sh 'mvn test'
+            }
+        }
+        stage('mvn install') {
+            steps {
+                sh 'mvn clean install'
+            }
+        }
+        stage('docker build') {
+            steps {
+                sh 'cp ./target/hello.war ./Docker/hello.war'
+                dir("Docker") {
+                    sh "pwd"
+                    sh 'docker build -t kaylan44/hello-webapp .'
+                }   
+            }
+        }
+    	stage('Login DockerHub') {
+			steps {
+			    sh 'echo $DOCKERHUB_CREDENTIALS_PSW'
+				sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+			}
+		}
+        stage('docker push to dockerhub') {
+            steps {
+                sh 'docker push kaylan44/hello-webapp:latest'
+
+            }
+        }
+        stage('Deploy to GCP K8S') {
+            steps {
+
+                dir("Kubernetes") {
+                    sh 'ls'
+
+                    echo "Deployment of Kubernetes cluster deployment:"
+                    step([
+                        $class:'KubernetesEngineBuilder',
+                        projectId: env.PROJECT_ID,
+                        clusterName: env.CLUSTER_NAME,
+                        location: env.LOCATION,
+                        manifestPattern: 'deployment.yml',
+                        credentialsId: env.CREDENTIALS_ID,
+                        verifyDeployments: true
+                    ])
+                    
+                   /* echo "Deployment of Kubernetes cluster basic service:"
+                    step([
+                        $class:'KubernetesEngineBuilder',
+                        projectId: env.PROJECT_ID,
+                        clusterName: env.CLUSTER_NAME,
+                        location: env.LOCATION,
+                        manifestPattern: 'service.yml',
+                        credentialsId: env.CREDENTIALS_ID,
+                        verifyDeployments: true])
+                        */
+                    echo "Deployment of Kubernetes cluster nodeport service:"
+                    step([
+                        $class:'KubernetesEngineBuilder',
+                        projectId: env.PROJECT_ID,
+                        clusterName: env.CLUSTER_NAME,
+                        location: env.LOCATION,
+                        manifestPattern: 'webnodeport.yml',
+                        credentialsId: env.CREDENTIALS_ID,
+                        verifyDeployments: true])
+                        
+                    echo "Deployment of Kubernetes cluster Ingress service:"
+                    step([
+                        $class:'KubernetesEngineBuilder',
+                        projectId: env.PROJECT_ID,
+                        clusterName: env.CLUSTER_NAME,
+                        location: env.LOCATION,
+                        manifestPattern: 'ingress.yml',
+                        credentialsId: env.CREDENTIALS_ID,
+                        verifyDeployments: true])
+                }
+            }
+        }
+    }
+}
