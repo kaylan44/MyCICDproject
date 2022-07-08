@@ -48,12 +48,12 @@ pipeline {
 	*/
 	stage('Login Nexus Repo') {
 		steps {
-			sh 'echo $NEXUS_CREDENTIALS_PSW | docker login -u $NEXUS_CREDENTIALS_USR --password-stdin http://34.78.82.108:8082/repository/docker-registry/'
+			sh 'echo $NEXUS_CREDENTIALS_PSW | docker login 34.78.82.108:8081 -u $NEXUS_CREDENTIALS_USR --password-stdin 34.78.82.108:8081'
 		}
 	}
         stage('Docker push to registry') {
             steps {
-                sh 'docker push kaylan44/hello-webapp:latest'
+                sh 'docker push 34.78.82.108:8082/hello-webapp:latest'
             }
         }
         stage('Deploy to GCP K8S') {
