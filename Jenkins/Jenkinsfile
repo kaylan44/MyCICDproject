@@ -12,11 +12,6 @@ pipeline {
 	}
 	
     stages {
-        stage('Echo Bonjour petit Pipeline') {
-            steps {
-                echo 'Bonjour petit Pipeline !'
-            }
-        }     
         stage('Git clone project') {
             steps {
                 git branch: 'main',
@@ -24,18 +19,18 @@ pipeline {
             }
         }
 
-        stage('mvn test') {
+        stage('Maven test') {
             steps {
                 sh 'echo $PWD'
                 sh 'mvn test'
             }
         }
-        stage('mvn install') {
+        stage('Maven install') {
             steps {
                 sh 'mvn clean install'
             }
         }
-        stage('docker build') {
+        stage('Docker image build') {
             steps {
                 sh 'cp ./target/hello.war ./Docker/hello.war'
                 dir("Docker") {
@@ -56,17 +51,15 @@ pipeline {
 			sh 'echo $NEXUS_CREDENTIALS_PSW | docker login -u $NEXUS_CREDENTIALS_USR --password-stdin 34.78.82.108:8082'
 		}
 	}
-        stage('docker push to dockerhub') {
+        stage('Docker push to registry') {
             steps {
                 sh 'docker push kaylan44/hello-webapp:latest'
-
             }
         }
         stage('Deploy to GCP K8S') {
             steps {
 
                 dir("Kubernetes") {
-                    sh 'ls'
 
                     echo "Deployment of Kubernetes cluster deployment:"
                     step([
