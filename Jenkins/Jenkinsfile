@@ -36,7 +36,7 @@ pipeline {
                 dir("Docker") {
                     sh "pwd"
                     //sh 'docker build -t kaylan44/hello-webapp .'
-		    sh 'docker build -t 34.78.82.108:8082/hello-webapp .'
+		    sh 'docker build -t 34.78.82.108:8081/repository/docker-registry/hello-webapp .'
                 }   
             }
         }
@@ -57,7 +57,7 @@ pipeline {
         stage('Docker push to registry') {
             steps {
 	    	//sh 'docker push kaylan44/hello-webapp:latest'
-                sh 'docker push 34.78.82.108:8082/hello-webapp:latest'
+                sh 'docker push 34.78.82.108:8081/repository/docker-registry/hello-webapp:latest'
             }
         }
         stage('Deploy to GCP K8S') {
