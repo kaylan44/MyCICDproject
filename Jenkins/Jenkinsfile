@@ -4,6 +4,7 @@ pipeline {
     
 	environment {
 		DOCKERHUB_CREDENTIALS=credentials('dockerhub-kaylan44')
+		NEXUS_CREDENTIALS=credentials('nexus-repo-cred')
 		PROJECT_ID = 'ilkilab08'
 		CLUSTER_NAME = 'cluster-ci-cd-m2i-project'
 		LOCATION= 'europe-west1-b'
@@ -43,12 +44,18 @@ pipeline {
                 }   
             }
         }
-    	stage('Login DockerHub') {
-			steps {
-			    sh 'echo $DOCKERHUB_CREDENTIALS_PSW'
-				sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-			}
+    	/*
+	stage('Login DockerHub') {
+		steps {
+			sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
 		}
+	}
+	*/
+	stage('Login Nexus Repo') {
+		steps {
+			sh 'echo $NEXUS_CREDENTIALS_PSW | docker login -u $NEXUS_CREDENTIALS_USR --password-stdin 34.78.82.108:8083'
+		}
+	}
         stage('docker push to dockerhub') {
             steps {
                 sh 'docker push kaylan44/hello-webapp:latest'
