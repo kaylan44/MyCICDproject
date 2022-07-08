@@ -17,5 +17,5 @@ spec:
         image: kaylan44/hello-webapp:latest
         ports:
         - containerPort: 80
-        - containerPort: 80
+        - containerPort: 8080
         - containerPort: 22
