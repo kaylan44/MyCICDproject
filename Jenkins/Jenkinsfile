@@ -46,13 +46,16 @@ pipeline {
 		}
 	}
 	*/
+	    /*
 	stage('Login Nexus Repo') {
 		steps {
 			sh 'echo $NEXUS_CREDENTIALS_PSW | docker login 34.78.82.108:8081 -u $NEXUS_CREDENTIALS_USR --password-stdin '
 		}
 	}
+	*/
         stage('Docker push to registry') {
             steps {
+	    	//sh 'docker push kaylan44/hello-webapp:latest'
                 sh 'docker push 34.78.82.108:8082/hello-webapp:latest'
             }
         }
