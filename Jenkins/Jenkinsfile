@@ -35,7 +35,8 @@ pipeline {
                 sh 'cp ./target/hello.war ./Docker/hello.war'
                 dir("Docker") {
                     sh "pwd"
-                    sh 'docker build -t kaylan44/hello-webapp .'
+                    //sh 'docker build -t kaylan44/hello-webapp .'
+		    sh 'docker build -t 34.78.82.108:8082/hello-webapp .'
                 }   
             }
         }
