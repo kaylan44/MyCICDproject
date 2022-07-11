@@ -47,6 +47,11 @@ pipeline {
 			sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
 		}
 	}
+	stage('Docker push to DockerHUBregistry') {
+            steps {
+	    	//sh 'docker push kaylan44/hello-webapp:latest'
+            }
+        }
 	*/
 	    
 	stage('Login Nexus Repo') {
@@ -55,7 +60,7 @@ pipeline {
 		}
 	}
 	
-        stage('Docker push to registry') {
+        stage('Docker push to NEXUS registry') {
             steps {
 	    	//sh 'docker push kaylan44/hello-webapp:latest'
 		    sh 'docker push ${NEXUS_SERVERIP_PORT}/hello-webapp:latest'
@@ -76,17 +81,7 @@ pipeline {
                         credentialsId: env.CREDENTIALS_ID,
                         verifyDeployments: true
                     ])
-                    
-                   /* echo "Deployment of Kubernetes cluster basic service:"
-                    step([
-                        $class:'KubernetesEngineBuilder',
-                        projectId: env.PROJECT_ID,
-                        clusterName: env.CLUSTER_NAME,
-                        location: env.LOCATION,
-                        manifestPattern: 'service.yml',
-                        credentialsId: env.CREDENTIALS_ID,
-                        verifyDeployments: true])
-                        */
+
                     echo "Deployment of Kubernetes cluster nodeport service:"
                     step([
                         $class:'KubernetesEngineBuilder',
