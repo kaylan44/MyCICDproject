@@ -66,10 +66,22 @@ pipeline {
 		    sh 'docker push ${NEXUS_SERVERIP_PORT}/hello-webapp:latest'
             }
         }
+	    
         stage('Deploy to GCP K8S') {
             steps {
 
                 dir("Kubernetes") {
+
+ 		    echo "Deployment of Kubernetes cluster docker secret :"
+                    step([
+                        $class:'KubernetesEngineBuilder',
+                        projectId: env.PROJECT_ID,
+                        clusterName: env.CLUSTER_NAME,
+                        location: env.LOCATION,
+                        manifestPattern: 'nexus_secret.yml',
+                        credentialsId: env.CREDENTIALS_ID,
+                        verifyDeployments: true
+                    ])
 
                     echo "Deployment of Kubernetes cluster deployment:"
                     step([
