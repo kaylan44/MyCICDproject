@@ -5,7 +5,7 @@ pipeline {
 	environment {
 		DOCKERHUB_CREDENTIALS=credentials('dockerhub-kaylan44')
 		NEXUS_CREDENTIALS=credentials('nexus-repo-cred')
-		NEXUS_SERVERIP_PORT='35.205.93.167:8082'
+		NEXUS_SERVERIP_PORT='10.132.0.43:8082'
 		PROJECT_ID = 'ilkilab08'
 		CLUSTER_NAME = 'cluster-ci-cd-m2i-project'
 		LOCATION= 'europe-west1-b'
