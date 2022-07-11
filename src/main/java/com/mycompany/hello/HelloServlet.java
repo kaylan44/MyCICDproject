@@ -17,9 +17,7 @@ public class HelloServlet extends HttpServlet {
         out.println("<BODY>");
         out.println("<h1>Hello Servlet</h1>");
         out.println("The deployment of the WebApp is working fine !!");   
-        out.println("<h6>test img</h>");
-
-        out.println("<iframe src='https://giphy.com/embed/IwAZ6dvvvaTtdI8SD5' width='480' height='400' frameBorder='0' class='giphy-embed' allowFullScreen></iframe>");        
+        out.println("<img src='https://giphy.com/embed/IwAZ6dvvvaTtdI8SD5'>");        
         out.println("<h5>Youpi</h5>");
         out.println("</BODY>");
         out.println("</HTML>");
