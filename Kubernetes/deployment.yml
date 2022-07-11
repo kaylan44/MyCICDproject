@@ -20,9 +20,10 @@ spec:
       containers:
       - name: hello-webapp
         image: 10.132.0.43:8082/hello-webapp:latest
-      imagePullSecrets:
-      - name: nexus-pull-secret
         ports:
         - containerPort: 80
         - containerPort: 8080
         - containerPort: 22
+      imagePullSecrets:
+      - name: nexus-pull-secret
+  
