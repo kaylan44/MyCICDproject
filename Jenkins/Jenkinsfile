@@ -5,6 +5,7 @@ pipeline {
 	environment {
 		DOCKERHUB_CREDENTIALS=credentials('dockerhub-kaylan44')
 		NEXUS_CREDENTIALS=credentials('nexus-repo-cred')
+		NEXUS_SERVERIP_PORT='35.205.93.167:8082'
 		PROJECT_ID = 'ilkilab08'
 		CLUSTER_NAME = 'cluster-ci-cd-m2i-project'
 		LOCATION= 'europe-west1-b'
@@ -36,7 +37,7 @@ pipeline {
                 dir("Docker") {
                     sh "pwd"
                     //sh 'docker build -t kaylan44/hello-webapp .'
-		    sh 'docker build -t 35.205.93.167:8082/hello-webapp .'
+		    sh 'docker build -t ${NEXUS_SERVERIP_PORT}/hello-webapp .'
                 }   
             }
         }
@@ -47,17 +48,17 @@ pipeline {
 		}
 	}
 	*/
-	    /*
+	    
 	stage('Login Nexus Repo') {
 		steps {
-			sh 'echo $NEXUS_CREDENTIALS_PSW | docker login 35.205.93.167:8082 -u $NEXUS_CREDENTIALS_USR --password-stdin '
+			sh 'echo $NEXUS_CREDENTIALS_PSW | docker login ${NEXUS_SERVERIP_PORT} -u $NEXUS_CREDENTIALS_USR --password-stdin '
 		}
 	}
-	*/
+	
         stage('Docker push to registry') {
             steps {
 	    	//sh 'docker push kaylan44/hello-webapp:latest'
-                sh 'docker push 35.205.93.167:8082/hello-webapp:latest'
+		    sh 'docker push ${NEXUS_SERVERIP_PORT}/hello-webapp:latest'
             }
         }
         stage('Deploy to GCP K8S') {
