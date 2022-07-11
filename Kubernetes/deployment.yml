@@ -8,7 +8,7 @@ spec:
     matchLabels:
       app: webapp
   strategy:
-    rollinguUpdate:
+    rollingUpdate:
       maxSurge: 20%
       maxUnavailable: 20%
     type: RollingUpdate
