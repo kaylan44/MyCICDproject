@@ -7,7 +7,7 @@ pipeline {
 		NEXUS_CREDENTIALS=credentials('nexus-repo-cred')
 		NEXUS_SERVERIP_PORT='10.132.0.43:8082'
 		PROJECT_ID = 'ilkilab08'
-		CLUSTER_NAME = 'cluster-ci-cd-m2i-project'
+		CLUSTER_NAME = 'terraform-cluster'
 		LOCATION= 'europe-west1-b'
 		CREDENTIALS_ID = 'kubernetes'
 	}
