@@ -23,11 +23,6 @@ resource "google_container_cluster" "terraform-cluster" {
     workload_pool = "devops-v4.svc.id.goog"
   }
 
-  ip_allocation_policy {
-    cluster_secondary_range_name  = "k8s-pod-range"
-    services_secondary_range_name = "k8s-service-range"
-  }
-
   private_cluster_config {
     enable_private_nodes    = true
     enable_private_endpoint = false
