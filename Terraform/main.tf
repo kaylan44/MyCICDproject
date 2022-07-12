@@ -10,7 +10,7 @@ terraform {
 provider "google" {
   credentials = file("ilkilab08-cred.json")
 
-  project = "<PROJECT_ID>"
+  project = "ilkilab08"
   region  = "europe-west1"
   zone    = "europe-west1-b"
 }
