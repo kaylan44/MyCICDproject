@@ -4,10 +4,6 @@ resource "google_container_cluster" "terraform-cluster" {
   location                 = var.zone
   remove_default_node_pool = true
   initial_node_count       = 2
-  network                  = google_compute_network.main.self_link
-  subnetwork               = google_compute_subnetwork.private.self_link
-  logging_service          = "logging.googleapis.com/kubernetes"
-  monitoring_service       = "monitoring.googleapis.com/kubernetes"
   networking_mode          = "VPC_NATIVE"
 
   addons_config {
