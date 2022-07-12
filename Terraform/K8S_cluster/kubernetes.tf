@@ -10,11 +10,6 @@ resource "google_container_cluster" "terraform-cluster" {
   monitoring_service       = "monitoring.googleapis.com/kubernetes"
   networking_mode          = "VPC_NATIVE"
 
-  # Optional, if you want multi-zonal cluster
-  node_locations = [
-    var.zone
-  ]
-
   addons_config {
     http_load_balancing {
       disabled = true
