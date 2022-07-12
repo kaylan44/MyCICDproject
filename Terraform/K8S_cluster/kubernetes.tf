@@ -4,7 +4,6 @@ resource "google_container_cluster" "terraform-cluster" {
   location                 = var.zone
   remove_default_node_pool = true
   initial_node_count       = 2
-  networking_mode          = "VPC_NATIVE"
 
   addons_config {
     http_load_balancing {
