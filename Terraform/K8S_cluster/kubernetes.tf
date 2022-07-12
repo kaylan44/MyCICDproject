@@ -1,38 +1,33 @@
-# https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/container_cluster
-resource "google_container_cluster" "terraform-cluster" {
-  name                     = "terraform-cluster"
-  location                 = var.zone
+resource "google_service_account" "default" {
+  account_id   = "service-account-id"
+  display_name = "Service Account"
+}
+
+resource "google_container_cluster" "primary" {
+  name     = "terraform-cluster"
+  location = var.region
+
+  # We can't create a cluster with no node pool defined, but we want to only use
+  # separately managed node pools. So we create the smallest possible default
+  # node pool and immediately delete it.
   remove_default_node_pool = true
-  initial_node_count       = 2
+  initial_node_count       = 1
+}
 
-  addons_config {
-    http_load_balancing {
-      disabled = true
-    }
-    horizontal_pod_autoscaling {
-      disabled = false
-    }
+resource "google_container_node_pool" "primary_preemptible_nodes" {
+  name       = "my-node-pool"
+  location   = var.region
+  cluster    = google_container_cluster.primary.name
+  node_count = 1
+
+  node_config {
+    preemptible  = true
+    machine_type = "e2-small"
+
+    # Google recommends custom service accounts that have cloud-platform scope and permissions granted via IAM Roles.
+    service_account = google_service_account.default.email
+    oauth_scopes    = [
+      "https://www.googleapis.com/auth/cloud-platform"
+    ]
   }
-
-  release_channel {
-    channel = "REGULAR"
-  }
-
-  workload_identity_config {
-    workload_pool = "devops-v4.svc.id.goog"
-  }
-
-  private_cluster_config {
-    enable_private_nodes    = true
-    enable_private_endpoint = false
-    master_ipv4_cidr_block  = "172.16.0.0/28"
-  }
-
-  #   Jenkins use case
-  #   master_authorized_networks_config {
-  #     cidr_blocks {
-  #       cidr_block   = "10.0.0.0/18"
-  #       display_name = "private-subnet-w-jenkins"
-  #     }
-  #   }
 }
