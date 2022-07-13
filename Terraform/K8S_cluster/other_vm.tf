@@ -20,7 +20,7 @@ resource "google_compute_instance" "vm_instance_jenkins" {
 }
 
 resource "google_compute_instance" "vm_instance_nexus" {
-  name         = "terraform-jenkins-nexus"
+  name         = "terraform-nexus"
   machine_type = "e2-micro"
   zone    = var.zone
 
