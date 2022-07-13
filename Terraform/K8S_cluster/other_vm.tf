@@ -8,6 +8,11 @@ resource "google_compute_instance" "vm_instance_jenkins" {
     image = "cos-cloud/cos-stable"    
     }
   }
+  network_interface {
+    network = google_compute_network.vpc_network.name
+    access_config {
+    }
+  }
 }
 
 resource "google_compute_instance" "vm_instance_nexus" {
@@ -18,6 +23,11 @@ resource "google_compute_instance" "vm_instance_nexus" {
   boot_disk {
     initialize_params {
     image = "cos-cloud/cos-stable"    
+    }
+  }
+  network_interface {
+    network = google_compute_network.vpc_network.name
+    access_config {
     }
   }
 }
