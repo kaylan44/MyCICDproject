@@ -1,3 +1,7 @@
+# Architecture 
+
+![image](https://user-images.githubusercontent.com/23658028/178774801-05aca771-4135-4297-8f28-80d6199485d2.png)
+
 # java-servlet-hello
 Hello world web application with Maven + Java + Servlets + Tomcat
 
@@ -21,3 +25,6 @@ docker run -i --rm --name hello-app -p 8081:8080 \
   tomcat:9.0-jre8-alpine
 ```
 And for opening the Servlet run in browser `http://localhost:8081/hello/hello`
+
+
+
