@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: hello-webapp
-        image: f532-35-205-93-167.eu.ngrok.io/hello-webapp:latest
+        image: fd38-35-205-93-167.eu.ngrok.io/hello-webapp:latest
         ports:
         - containerPort: 80
         - containerPort: 8080
